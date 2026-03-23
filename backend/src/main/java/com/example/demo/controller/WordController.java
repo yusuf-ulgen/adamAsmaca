@@ -16,7 +16,9 @@ public class WordController {
     }
 
     @GetMapping("/word")
-    public WordResponse getWord(@RequestParam(required = false) String difficulty) {
-        return wordService.getRandomWord(difficulty);
+    public WordResponse getWord(
+            @RequestParam(required = false) String difficulty,
+            @RequestParam(required = false) String category) {
+        return wordService.getRandomWord(difficulty, category);
     }
 }
