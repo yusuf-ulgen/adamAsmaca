@@ -69,7 +69,7 @@ export default function Home() {
   // Fetch new word
   const startNewGame = useCallback(async () => {
     try {
-      const res = await fetch(`http://localhost:8080/api/word?difficulty=${difficulty}&category=${category}`)
+      const res = await fetch(`http://localhost:8081/api/word?difficulty=${difficulty}&category=${category}`)
       const data = await res.json()
       setWord(data.word.toUpperCase())
       setGuessedLetters([])
@@ -123,7 +123,7 @@ export default function Home() {
 
     const timeTaken = Math.floor((Date.now() - startTime) / 1000)
     try {
-      const res = await fetch('http://localhost:8080/api/user/update-stats', {
+      const res = await fetch('http://localhost:8081/api/user/update-stats', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -151,7 +151,7 @@ export default function Home() {
 
   const fetchLeaderboard = async () => {
     try {
-      const res = await fetch('http://localhost:8080/api/leaderboard')
+      const res = await fetch('http://localhost:8081/api/leaderboard')
       const data = await res.json()
       setLeaderboard(data)
       setShowLeaderboard(true)
@@ -472,7 +472,7 @@ export default function Home() {
                   }}
                   onClick={async () => {
                     setCategory(cat)
-                    const res = await fetch(`http://localhost:8080/api/leaderboard?category=${cat}`)
+                    const res = await fetch(`http://localhost:8081/api/leaderboard?category=${cat}`)
                     const data = await res.json()
                     setLeaderboard(data)
                   }}

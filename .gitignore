@@ -1,0 +1,16 @@
+# Node
+node_modules/
+.npm/
+
+# Next.js
+.next/
+out/
+build/
+
+# IDE
+.idea/
+.vscode/
+
+# Backend (Spring Boot)
+backend/target/
+backend/.mvn/wrapper/maven-wrapper.jar
