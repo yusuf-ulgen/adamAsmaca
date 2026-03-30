@@ -9,6 +9,8 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
@@ -17,28 +19,37 @@ import java.util.Map;
 public class WordDataInitializer implements ApplicationRunner {
 
     private final WordRepository wordRepository;
-    private final ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public WordDataInitializer(WordRepository wordRepository, ObjectMapper objectMapper) {
+    public WordDataInitializer(WordRepository wordRepository) {
         this.wordRepository = wordRepository;
-        this.objectMapper = objectMapper;
     }
 
     @Override
     public void run(ApplicationArguments args) {
         if (wordRepository.count() > 0) return;
 
-        try (InputStream inputStream = new ClassPathResource("words.json").getInputStream()) {
-            TypeReference<Map<String, List<String>>> typeReference = new TypeReference<>() {};
-            Map<String, List<String>> categoryWords = objectMapper.readValue(inputStream, typeReference);
-
-            for (Map.Entry<String, List<String>> entry : categoryWords.entrySet()) {
-                String category = entry.getKey();
-                for (String w : entry.getValue()) {
-                    wordRepository.save(new Word(w.toUpperCase(), getDiff(w), category));
-                }
+        try {
+            InputStream inputStream;
+            File localFile = new File("src/main/resources/words.json");
+            if (localFile.exists()) {
+                inputStream = new FileInputStream(localFile);
+            } else {
+                inputStream = new ClassPathResource("words.json").getInputStream();
             }
-            System.out.println("Word pool initialized from words.json with categorized words.");
+            
+            try (inputStream) {
+                TypeReference<Map<String, List<String>>> typeReference = new TypeReference<>() {};
+                Map<String, List<String>> categoryWords = objectMapper.readValue(inputStream, typeReference);
+
+                for (Map.Entry<String, List<String>> entry : categoryWords.entrySet()) {
+                    String category = entry.getKey();
+                    for (String w : entry.getValue()) {
+                        wordRepository.save(new Word(w.toUpperCase(), getDiff(w), category));
+                    }
+                }
+                System.out.println("Word pool initialized from words.json with categorized words.");
+            }
         } catch (Exception e) {
             System.err.println("Could not load words from words.json: " + e.getMessage());
             e.printStackTrace();

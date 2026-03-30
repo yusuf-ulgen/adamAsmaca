@@ -83,7 +83,7 @@ export default function Home() {
       SoundManager.play('click')
     } catch (err) {
       // Fallback
-      setWord("ADAMASMACA")
+      setWord("ADAM ASMACA")
       setGuessedLetters([])
       setMistakes(0)
       setStatus('playing')
@@ -182,7 +182,7 @@ export default function Home() {
       }
     } else {
       SoundManager.play('correct')
-      const isWin = word.split('').every((l: string) => newGuessed.includes(l))
+      const isWin = word.split('').filter((l: string) => l !== ' ').every((l: string) => newGuessed.includes(l))
       if (isWin) {
         setStatus('won')
         setShowConfetti(true)
@@ -194,7 +194,7 @@ export default function Home() {
   // Power-ups
   const useHint = () => {
     if (!user || user.gold < 50 || status !== 'playing') return
-    const remainingLetters = word.split('').filter((l: string) => !guessedLetters.includes(l))
+    const remainingLetters = word.split('').filter((l: string) => l !== ' ' && !guessedLetters.includes(l))
     if (remainingLetters.length === 0) return
     const randomLetter = remainingLetters[Math.floor(Math.random() * remainingLetters.length)]
     handleGuess(randomLetter)
@@ -361,26 +361,41 @@ export default function Home() {
               </div>
             </div>
           ) : (
-            <div style={{ textAlign: 'center', fontSize: '1.2rem', fontWeight: 'bold' }}>
-              <div style={{ marginBottom: '1rem', color: 'var(--error)' }}>
-                {mistakes} / {maxErrors} HATA
-              </div>
-              <div style={{ fontSize: '4.5rem', lineHeight: '1', fontFamily: 'monospace' }}>
-                {mistakes >= 1 ? '💀' : '☁️'}<br/>
-                {mistakes >= 2 ? '/' : ' '}{mistakes >= 3 ? '|' : ' '}{mistakes >= 4 ? '\\' : ' '}<br/>
-                {mistakes >= 5 ? '/' : ' '} {mistakes >= 6 ? '\\' : ' '}
-              </div>
+            <div style={{ position: 'relative', width: '320px', height: '320px' }}>
+              <svg width="320" height="320" viewBox="0 0 320 320" style={{ position: 'absolute', top: 0, left: 0 }}>
+                <g stroke="var(--foreground)" strokeLinecap="round">
+                  {/* Gallows */}
+                  <line x1="40" y1="280" x2="280" y2="280" strokeWidth="8" />
+                  <line x1="80" y1="280" x2="80" y2="40" strokeWidth="8" />
+                  <line x1="76" y1="40" x2="220" y2="40" strokeWidth="8" />
+                  <line x1="80" y1="80" x2="120" y2="40" strokeWidth="8" />
+                  <line x1="220" y1="40" x2="220" y2="80" strokeWidth="4" />
+                  
+                  {/* Default Hangman Figure */}
+                  {revealPercent > 0 && <circle cx="220" cy="110" r="30" strokeWidth="6" fill="var(--background)" />}
+                  {revealPercent > 16.7 && <line x1="220" y1="140" x2="220" y2="210" strokeWidth="6" />}
+                  {revealPercent > 33.4 && <line x1="220" y1="150" x2="170" y2="190" strokeWidth="6" />}
+                  {revealPercent > 50.1 && <line x1="220" y1="150" x2="270" y2="190" strokeWidth="6" />}
+                  {revealPercent > 66.8 && <line x1="220" y1="210" x2="180" y2="260" strokeWidth="6" />}
+                  {revealPercent > 83.5 && <line x1="220" y1="210" x2="260" y2="260" strokeWidth="6" />}
+                </g>
+              </svg>
             </div>
           )}
         </div>
 
         <div style={{ flex: 1, minWidth: '350px', display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-          <div className="word-display">
-            {word.split('').map((char: string, i: number) => (
-              <div key={i} className="letter-slot">
-                {guessedLetters.includes(char) ? char : ''}
-              </div>
-            ))}
+          <div className="word-display" style={{ flexWrap: 'wrap', justifyContent: 'center' }}>
+            {word.split('').map((char: string, i: number) => {
+              if (char === ' ') {
+                return <div key={i} style={{ width: '30px', height: '60px' }} />
+              }
+              return (
+                <div key={i} className="letter-slot">
+                  {guessedLetters.includes(char) ? char : ''}
+                </div>
+              )
+            })}
           </div>
 
           {status !== 'playing' && (

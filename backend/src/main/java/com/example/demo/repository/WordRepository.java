@@ -13,4 +13,10 @@ public interface WordRepository extends JpaRepository<Word, Long> {
     
     @Query(value = "SELECT * FROM words WHERE difficulty = :difficulty ORDER BY RAND() LIMIT 1", nativeQuery = true)
     Word findRandomWordByDifficulty(String difficulty);
+
+    @Query(value = "SELECT * FROM words WHERE category = :category ORDER BY RAND() LIMIT 1", nativeQuery = true)
+    Word findRandomWordByCategory(String category);
+
+    @Query(value = "SELECT * FROM words WHERE difficulty = :difficulty AND category = :category ORDER BY RAND() LIMIT 1", nativeQuery = true)
+    Word findRandomWordByDifficultyAndCategory(String difficulty, String category);
 }
