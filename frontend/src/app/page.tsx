@@ -7,7 +7,7 @@ const ALPHABET = "ABCÇDEFGĞHIİJKLMNOÖPRSŞTUÜVYZ".split("")
 
 export default function Home() {
   // User/Economy State
-  const [user, setUser] = useState<{name: string, gold: number, inventory: string[]} | null>(null)
+  const [user, setUser] = useState<{name: string, gold: number, inventory: string[], unlockedAchievements?: string[]} | null>(null)
   
   // Game State
   const [word, setWord] = useState("")
@@ -69,7 +69,8 @@ export default function Home() {
   // Fetch new word
   const startNewGame = useCallback(async () => {
     try {
-      const res = await fetch(`http://localhost:8081/api/word?difficulty=${difficulty}&category=${category}`)
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8081'
+      const res = await fetch(`${API_URL}/api/word?difficulty=${difficulty}&category=${category}`)
       const data = await res.json()
       setWord(data.word.toUpperCase())
       setGuessedLetters([])
@@ -123,7 +124,8 @@ export default function Home() {
 
     const timeTaken = Math.floor((Date.now() - startTime) / 1000)
     try {
-      const res = await fetch('http://localhost:8081/api/user/update-stats', {
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8081'
+      const res = await fetch(`${API_URL}/api/user/update-stats`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -151,7 +153,8 @@ export default function Home() {
 
   const fetchLeaderboard = async () => {
     try {
-      const res = await fetch('http://localhost:8081/api/leaderboard')
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8081'
+      const res = await fetch(`${API_URL}/api/leaderboard`)
       const data = await res.json()
       setLeaderboard(data)
       setShowLeaderboard(true)
@@ -520,7 +523,7 @@ export default function Home() {
             <div className="shop-card">
               <div>
                 <p><strong>Ekstra Can</strong></p>
-                <p style={{ size: '0.8rem', opacity: 0.7 }}>Mevcut oyuna +1 hak ekler.</p>
+                <p style={{ fontSize: '0.8rem', opacity: 0.7 }}>Mevcut oyuna +1 hak ekler.</p>
               </div>
               <button className="button" onClick={buyExtraLife}>100 🪙</button>
             </div>
@@ -528,7 +531,7 @@ export default function Home() {
             <div className="shop-card">
               <div>
                 <p><strong>İpucu Paketi</strong></p>
-                <p style={{ size: '0.8rem', opacity: 0.7 }}>Rastgele bir harf açar.</p>
+                <p style={{ fontSize: '0.8rem', opacity: 0.7 }}>Rastgele bir harf açar.</p>
               </div>
               <button className="button" onClick={useHint}>50 🪙</button>
             </div>
@@ -561,7 +564,8 @@ export default function Home() {
                   }}
                   onClick={async () => {
                     setCategory(cat)
-                    const res = await fetch(`http://localhost:8081/api/leaderboard?category=${cat}`)
+                    const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8081'
+                    const res = await fetch(`${API_URL}/api/leaderboard?category=${cat}`)
                     const data = await res.json()
                     setLeaderboard(data)
                   }}
