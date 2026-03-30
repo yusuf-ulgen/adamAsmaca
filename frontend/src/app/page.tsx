@@ -210,12 +210,22 @@ export default function Home() {
   // Keyboard support
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setShowSettings(false)
+        setShowCategorySelect(false)
+        setShowShop(false)
+        setShowLeaderboard(false)
+        setShowAchievements(false)
+        return
+      }
       const key = e.key.toUpperCase()
-      if (ALPHABET.includes(key)) handleGuess(key)
+      if (ALPHABET.includes(key) && !showSettings && !showCategorySelect && !showShop && !showLeaderboard && !showAchievements) {
+        handleGuess(key)
+      }
     }
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [handleGuess])
+  }, [handleGuess, showSettings, showCategorySelect, showShop, showLeaderboard, showAchievements])
 
   const revealPercent = Math.min((mistakes / maxErrors) * 100, 100)
 
@@ -243,7 +253,11 @@ export default function Home() {
       {showCategorySelect && (
         <div className="settings-overlay">
           <div className="settings-modal" style={{ maxWidth: '600px' }}>
-            <h2 style={{ textAlign: 'center' }}>KATEGORİ SEÇ</h2>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+              <div style={{ width: '40px' }}></div>
+              <h2 style={{ textAlign: 'center', margin: 0 }}>KATEGORİ SEÇ</h2>
+              <button className="button" style={{ padding: '0.5rem', background: 'transparent', color: 'var(--foreground)' }} onClick={() => setShowCategorySelect(false)}>✖</button>
+            </div>
             <div className="category-grid">
               {[
                 { id: 'GENEL', icon: '🌐', label: 'Genel' },
@@ -267,12 +281,12 @@ export default function Home() {
         </div>
       )}
 
-      <header style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <div>
+      <header style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1.5rem' }}>
+        <div style={{ minWidth: '200px' }}>
           <h1>ADAM ASMACA</h1>
           <p style={{ opacity: 0.7 }}>Hoş geldin, {user?.name}</p>
         </div>
-        <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+        <div style={{ display: 'flex', gap: '0.8rem', alignItems: 'center', flexWrap: 'wrap', flex: 1, justifyContent: 'flex-end' }}>
           {user && (user as any).currentStreak > 1 && (
             <div className="combo-badge">
               🔥 {(user as any).currentStreak} SERİ!
@@ -288,9 +302,12 @@ export default function Home() {
       </header>
 
       {/* Timer & Info Bar */}
-      <div style={{ width: '100%', display: 'flex', justifyContent: 'center', margin: '1rem 0' }}>
-        <div className={`gold-badge ${timeLeft < 10 ? 'pulsate' : ''}`} style={{ background: timeLeft < 10 ? 'var(--error)' : 'rgba(255,255,255,0.1)', fontSize: '1.2rem', padding: '0.8rem 2rem' }}>
-          ⏱️ KALAN SÜRE: {timeLeft}s
+      <div style={{ width: '100%', display: 'flex', justifyContent: 'center', gap: '1rem', margin: '1rem 0', flexWrap: 'wrap' }}>
+        <div className={`gold-badge ${timeLeft < 10 ? 'pulsate' : ''}`} style={{ background: timeLeft < 10 ? 'var(--error)' : 'var(--surface)', border: '1px solid var(--border)', color: timeLeft < 10 ? 'white' : 'var(--foreground)', fontSize: '1.2rem', padding: '0.8rem 2rem' }}>
+          ⏱️ SÜRE: {timeLeft}s
+        </div>
+        <div className={`gold-badge ${mistakes >= maxErrors - 1 ? 'pulsate' : ''}`} style={{ background: mistakes >= maxErrors - 1 ? 'var(--error)' : 'var(--surface)', border: '1px solid var(--border)', color: mistakes >= maxErrors - 1 ? 'white' : 'var(--foreground)', fontSize: '1.2rem', padding: '0.8rem 2rem' }}>
+          ❤️ CAN: {maxErrors - mistakes} / {maxErrors}
         </div>
       </div>
 
@@ -308,13 +325,41 @@ export default function Home() {
       <main style={{ display: 'flex', gap: '3rem', width: '100%', flexWrap: 'wrap', justifyContent: 'center' }}>
         <div className={`gallows-container ${isShaking ? 'shake' : ''}`}>
           {customImage ? (
-            <>
-              <img src={customImage} className="custom-image" alt="Hangman" />
-              <div 
-                className="mask-container" 
-                style={{ transform: `scaleY(${1 - revealPercent / 100})` }}
-              />
-            </>
+            <div style={{ position: 'relative', width: '320px', height: '320px' }}>
+              <svg width="320" height="320" viewBox="0 0 320 320" style={{ position: 'absolute', top: 0, left: 0 }}>
+                <g stroke="var(--foreground)" strokeLinecap="round">
+                  <line x1="40" y1="280" x2="280" y2="280" strokeWidth="8" />
+                  <line x1="80" y1="280" x2="80" y2="40" strokeWidth="8" />
+                  <line x1="76" y1="40" x2="220" y2="40" strokeWidth="8" />
+                  <line x1="80" y1="80" x2="120" y2="40" strokeWidth="8" />
+                  <line x1="220" y1="40" x2="220" y2="80" strokeWidth="4" />
+                </g>
+              </svg>
+              <div style={{
+                position: 'absolute',
+                top: '80px',
+                left: '160px',
+                width: '120px',
+                height: '180px',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'flex-start'
+              }}>
+                <img 
+                  src={customImage} 
+                  style={{ 
+                    width: '100%', 
+                    height: '100%', 
+                    objectFit: 'cover',
+                    objectPosition: 'top center',
+                    clipPath: `inset(0 0 ${100 - revealPercent}% 0)`,
+                    transition: 'clip-path 0.5s ease',
+                    borderRadius: '0.5rem'
+                  }} 
+                  alt="Hangman" 
+                />
+              </div>
+            </div>
           ) : (
             <div style={{ textAlign: 'center', fontSize: '1.2rem', fontWeight: 'bold' }}>
               <div style={{ marginBottom: '1rem', color: 'var(--error)' }}>
@@ -374,7 +419,10 @@ export default function Home() {
       {showSettings && (
         <div className="settings-overlay">
           <div className="settings-modal" style={{ backdropFilter: 'blur(20px)' }}>
-            <h2 style={{ fontSize: '1.8rem' }}>⚙️ Oyun Ayarları</h2>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <h2 style={{ fontSize: '1.8rem', margin: 0 }}>⚙️ Oyun Ayarları</h2>
+              <button className="button" style={{ padding: '0.5rem', background: 'transparent', color: 'var(--foreground)' }} onClick={() => setShowSettings(false)}>✖</button>
+            </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
               <label>Zorluk Seviyesi</label>
               <select value={difficulty} onChange={(e) => setDifficulty(e.target.value)} className="button" style={{ background: 'var(--surface)', color: 'var(--foreground)' }}>
@@ -384,7 +432,33 @@ export default function Home() {
               </select>
 
               <label>Başlangıç Canı</label>
-              <input type="number" value={maxErrors} onChange={(e) => setMaxErrors(Number(e.target.value))} min="1" max="15" />
+              <div style={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: '1rem', 
+                background: 'var(--surface)', 
+                borderRadius: '1rem', 
+                padding: '0.4rem', 
+                border: '1px solid var(--border)' 
+              }}>
+                <button 
+                  className="button" 
+                  style={{ padding: '0.5rem 1rem', fontSize: '1.2rem', margin: 0, minWidth: '45px' }} 
+                  onClick={() => setMaxErrors(Math.max(1, maxErrors - 1))}
+                >
+                  -
+                </button>
+                <div style={{ flex: 1, textAlign: 'center', fontSize: '1.4rem', fontWeight: 'bold' }}>
+                  {maxErrors}
+                </div>
+                <button 
+                  className="button" 
+                  style={{ padding: '0.5rem 1rem', fontSize: '1.2rem', margin: 0, minWidth: '45px' }} 
+                  onClick={() => setMaxErrors(Math.min(15, maxErrors + 1))}
+                >
+                  +
+                </button>
+              </div>
 
               <label>Görünüm Tema</label>
               <div style={{ display: 'flex', gap: '0.5rem' }}>
@@ -393,8 +467,8 @@ export default function Home() {
                 ))}
               </div>
 
-              <label>Özel Karakter PNG</label>
-              <input type="file" accept="image/png" onChange={(e) => {
+              <label>Özel Karakter Görseli</label>
+              <input type="file" accept="image/png, image/jpeg, image/jpg, image/webp" onChange={(e) => {
                 const file = e.target.files?.[0]
                 if (file) {
                   const reader = new FileReader()
