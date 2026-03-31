@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   title: 'Adam Asmaca',
   description: 'Gelişmiş Adam Asmaca Oyunu',
   icons: {
-    icon: '/vercel_logo.png',
+    icon: '/adam_asmaca_logo.png',
   },
 }
 
