@@ -39,13 +39,15 @@ public class WordDataInitializer implements ApplicationRunner {
             }
             
             try (inputStream) {
-                TypeReference<Map<String, List<String>>> typeReference = new TypeReference<>() {};
-                Map<String, List<String>> categoryWords = objectMapper.readValue(inputStream, typeReference);
+                TypeReference<Map<String, List<Map<String, String>>>> typeReference = new TypeReference<>() {};
+                Map<String, List<Map<String, String>>> categoryWords = objectMapper.readValue(inputStream, typeReference);
 
-                for (Map.Entry<String, List<String>> entry : categoryWords.entrySet()) {
+                for (Map.Entry<String, List<Map<String, String>>> entry : categoryWords.entrySet()) {
                     String category = entry.getKey();
-                    for (String w : entry.getValue()) {
-                        wordRepository.save(new Word(w.toUpperCase(), getDiff(w), category));
+                    for (Map<String, String> wObj : entry.getValue()) {
+                        String w = wObj.get("word");
+                        String meaning = wObj.get("meaning");
+                        wordRepository.save(new Word(w.toUpperCase(), getDiff(w), category, meaning));
                     }
                 }
                 System.out.println("Word pool initialized from words.json with categorized words.");
