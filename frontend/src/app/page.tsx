@@ -238,7 +238,7 @@ export default function Home() {
     }
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [handleGuess, showSettings, showCategorySelect, showShop, showLeaderboard, showAchievements])
+  }, [handleGuess, status, startNewGame, showSettings, showCategorySelect, showShop, showLeaderboard, showAchievements])
 
   const revealPercent = Math.min((mistakes / maxErrors) * 100, 100)
 
