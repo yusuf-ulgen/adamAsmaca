@@ -1,16 +1,32 @@
 # Node
 node_modules/
 .npm/
+.pnpm-store/
 
 # Next.js
 .next/
 out/
 build/
+.env*
+!.env.example
 
 # IDE
 .idea/
 .vscode/
+*.swp
+*.swo
+.DS_Store
 
 # Backend (Spring Boot)
 backend/target/
 backend/.mvn/wrapper/maven-wrapper.jar
+backend/*.log
+backend/.factorypath
+backend/.project
+backend/.settings
+backend/.classpath
+
+# Packages
+package-lock.json
+yarn.lock
+pnpm-lock.yaml

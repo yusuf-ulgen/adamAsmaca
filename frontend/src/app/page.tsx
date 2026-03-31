@@ -26,6 +26,7 @@ export default function Home() {
   const [showAchievements, setShowAchievements] = useState(false)
   const [leaderboard, setLeaderboard] = useState<any[]>([])
   const [lastAchievement, setLastAchievement] = useState<string | null>(null)
+  const [meaning, setMeaning] = useState("")
 
   // Hyper-Premium States
   const [category, setCategory] = useState('GENEL')
@@ -73,6 +74,7 @@ export default function Home() {
       const res = await fetch(`${API_URL}/api/word?difficulty=${difficulty}&category=${category}`)
       const data = await res.json()
       setWord(data.word.toUpperCase())
+      setMeaning(data.meaning || "")
       setGuessedLetters([])
       setMistakes(0)
       setStatus('playing')
@@ -85,6 +87,7 @@ export default function Home() {
     } catch (err) {
       // Fallback
       setWord("ADAM ASMACA")
+      setMeaning("Bir oyun adı.")
       setGuessedLetters([])
       setMistakes(0)
       setStatus('playing')
@@ -286,8 +289,8 @@ export default function Home() {
 
       <header style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1.5rem' }}>
         <div style={{ minWidth: '200px' }}>
-          <h1>ADAM ASMACA</h1>
-          <p style={{ opacity: 0.7 }}>Hoş geldin, {user?.name}</p>
+          <h1 style={{ fontFamily: "'Press Start 2P', cursive", fontSize: '2.5rem' }}>ADAM ASMACA</h1>
+          <p style={{ opacity: 0.8, fontSize: '1.2rem' }}>Hoş geldin, {user?.name}</p>
         </div>
         <div style={{ display: 'flex', gap: '0.8rem', alignItems: 'center', flexWrap: 'wrap', flex: 1, justifyContent: 'flex-end' }}>
           {user && (user as any).currentStreak > 1 && (
@@ -425,9 +428,14 @@ export default function Home() {
             ))}
           </div>
 
-          <div style={{ display: 'flex', gap: '1rem' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            {meaning && (
+              <div className="meaning-hint">
+                <strong>İPUCU:</strong> {meaning}
+              </div>
+            )}
             <button className="button" onClick={useHint} disabled={status !== 'playing' || (user?.gold || 0) < 50}>
-              💡 İPUCU (50 Altın)
+              💡 HARF AL (50 Altın)
             </button>
           </div>
         </div>

@@ -2,8 +2,7 @@ node_modules/
 .next/
 out/
 build/
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+.env*
+!.env.example
+.DS_Store
+*.local
