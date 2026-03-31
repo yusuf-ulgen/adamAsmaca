@@ -52,10 +52,9 @@ body {
 .container {
   max-width: 950px;
   width: 98%;
-  height: 85vh;
-  min-height: 700px;
+  height: 80vh;
   margin: auto;
-  padding: 2rem 1.5rem;
+  padding: 1.5rem;
   background: var(--surface);
   border: 4px solid #000;
   box-shadow: var(--shadow);
