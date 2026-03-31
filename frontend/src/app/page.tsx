@@ -287,33 +287,32 @@ export default function Home() {
         </div>
       )}
 
-      <header style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1.5rem' }}>
-        <div style={{ minWidth: '200px' }}>
-          <h1 style={{ fontFamily: "'Press Start 2P', cursive", fontSize: '2.5rem' }}>ADAM ASMACA</h1>
-          <p style={{ opacity: 0.8, fontSize: '1.2rem' }}>Hoş geldin, {user?.name}</p>
+      <header style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
+        <div style={{ minWidth: '150px' }}>
+          <h1 style={{ fontFamily: "'Press Start 2P', cursive", fontSize: '1.2rem', margin: 0 }}>ADAM ASMACA</h1>
+          <p style={{ opacity: 0.8, fontSize: '0.9rem', margin: 0 }}>Hoş geldin, {user?.name}</p>
         </div>
-        <div style={{ display: 'flex', gap: '0.8rem', alignItems: 'center', flexWrap: 'wrap', flex: 1, justifyContent: 'flex-end' }}>
+        <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center', flexWrap: 'wrap', flex: 1, justifyContent: 'flex-end' }}>
           {user && (user as any).currentStreak > 1 && (
-            <div className="combo-badge">
-              🔥 {(user as any).currentStreak} SERİ!
+            <div className="combo-badge" style={{ fontSize: '0.7rem', padding: '0.2rem 0.5rem' }}>
+              🔥 {(user as any).currentStreak}
             </div>
           )}
-          <div className="gold-badge">🪙 {user?.gold} ALTIN</div>
-          <button className="button" style={{ background: 'var(--primary)' }} onClick={() => setShowCategorySelect(true)}>📁 {category}</button>
-          <button className="button" style={{ background: '#3b82f6' }} onClick={fetchLeaderboard}>🏆 Sıralama</button>
-          <button className="button" style={{ background: '#8b5cf6' }} onClick={() => setShowAchievements(true)}>🌟 Başarımlar</button>
-          <button className="button" style={{ background: '#f59e0b' }} onClick={() => setShowShop(true)}>🛒 Market</button>
-          <button className="button" onClick={() => setShowSettings(true)}>⚙️ Ayarlar</button>
+          <div className="gold-badge" style={{ fontSize: '0.8rem', padding: '0.2rem 0.6rem' }}>🪙 {user?.gold}</div>
+          <button className="button" style={{ background: 'var(--primary)', padding: '0.4rem 0.8rem' }} onClick={() => setShowCategorySelect(true)}>{category}</button>
+          <button className="button" style={{ background: '#3b82f6', padding: '0.4rem 0.8rem' }} onClick={fetchLeaderboard}>🏆</button>
+          <button className="button" style={{ background: '#f59e0b', padding: '0.4rem 0.8rem' }} onClick={() => setShowShop(true)}>🛒</button>
+          <button className="button" style={{ padding: '0.4rem 0.8rem' }} onClick={() => setShowSettings(true)}>⚙️</button>
         </div>
       </header>
 
       {/* Timer & Info Bar */}
-      <div style={{ width: '100%', display: 'flex', justifyContent: 'center', gap: '1rem', margin: '1rem 0', flexWrap: 'wrap' }}>
-        <div className={`gold-badge ${timeLeft < 10 ? 'pulsate' : ''}`} style={{ background: timeLeft < 10 ? 'var(--error)' : 'var(--surface)', border: '1px solid var(--border)', color: timeLeft < 10 ? 'white' : 'var(--foreground)', fontSize: '1.2rem', padding: '0.8rem 2rem' }}>
-          ⏱️ SÜRE: {timeLeft}s
+      <div style={{ width: '100%', display: 'flex', justifyContent: 'center', gap: '0.5rem', margin: '0.2rem 0' }}>
+        <div className={`gold-badge ${timeLeft < 10 ? 'pulsate' : ''}`} style={{ fontSize: '0.8rem', padding: '0.2rem 1rem' }}>
+          ⏱️ {timeLeft}s
         </div>
-        <div className={`gold-badge ${mistakes >= maxErrors - 1 ? 'pulsate' : ''}`} style={{ background: mistakes >= maxErrors - 1 ? 'var(--error)' : 'var(--surface)', border: '1px solid var(--border)', color: mistakes >= maxErrors - 1 ? 'white' : 'var(--foreground)', fontSize: '1.2rem', padding: '0.8rem 2rem' }}>
-          ❤️ CAN: {maxErrors - mistakes} / {maxErrors}
+        <div className={`gold-badge ${mistakes >= maxErrors - 1 ? 'pulsate' : ''}`} style={{ fontSize: '0.8rem', padding: '0.2rem 1rem' }}>
+          ❤️ {maxErrors - mistakes} / {maxErrors}
         </div>
       </div>
 
@@ -328,57 +327,18 @@ export default function Home() {
         </div>
       )}
 
-      <main style={{ display: 'flex', gap: '3rem', width: '100%', flexWrap: 'wrap', justifyContent: 'center' }}>
+      <main style={{ display: 'flex', gap: '1rem', width: '100%', flex: 1, overflow: 'hidden', alignItems: 'center' }}>
         <div className={`gallows-container ${isShaking ? 'shake' : ''}`}>
-          {customImage ? (
-            <div style={{ position: 'relative', width: '320px', height: '320px' }}>
-              <svg width="320" height="320" viewBox="0 0 320 320" style={{ position: 'absolute', top: 0, left: 0 }}>
-                <g stroke="var(--foreground)" strokeLinecap="round">
-                  <line x1="40" y1="280" x2="280" y2="280" strokeWidth="8" />
-                  <line x1="80" y1="280" x2="80" y2="40" strokeWidth="8" />
-                  <line x1="76" y1="40" x2="220" y2="40" strokeWidth="8" />
-                  <line x1="80" y1="80" x2="120" y2="40" strokeWidth="8" />
-                  <line x1="220" y1="40" x2="220" y2="80" strokeWidth="4" />
-                </g>
-              </svg>
-              <div style={{
-                position: 'absolute',
-                top: '80px',
-                left: '160px',
-                width: '120px',
-                height: '180px',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'flex-start'
-              }}>
-                <img 
-                  src={customImage} 
-                  style={{ 
-                    width: '100%', 
-                    height: '100%', 
-                    objectFit: 'cover',
-                    objectPosition: 'top center',
-                    clipPath: `inset(0 0 ${100 - revealPercent}% 0)`,
-                    transition: 'clip-path 0.5s ease',
-                    borderRadius: '0.5rem'
-                  }} 
-                  alt="Hangman" 
-                />
-              </div>
-            </div>
-          ) : (
-            <div style={{ position: 'relative', width: '320px', height: '320px' }}>
-              <svg width="320" height="320" viewBox="0 0 320 320" style={{ position: 'absolute', top: 0, left: 0 }}>
-                <g stroke="var(--foreground)" strokeLinecap="round">
-                  {/* Gallows */}
+           <div style={{ position: 'relative', width: '240px', height: '240px' }}>
+              <svg width="240" height="240" viewBox="0 0 320 320" style={{ position: 'absolute', top: 0, left: 0 }}>
+                <g stroke="white" strokeLinecap="round">
                   <line x1="40" y1="280" x2="280" y2="280" strokeWidth="8" />
                   <line x1="80" y1="280" x2="80" y2="40" strokeWidth="8" />
                   <line x1="76" y1="40" x2="220" y2="40" strokeWidth="8" />
                   <line x1="80" y1="80" x2="120" y2="40" strokeWidth="8" />
                   <line x1="220" y1="40" x2="220" y2="80" strokeWidth="4" />
                   
-                  {/* Default Hangman Figure */}
-                  {revealPercent > 0 && <circle cx="220" cy="110" r="30" strokeWidth="6" fill="var(--background)" />}
+                  {revealPercent > 0 && <circle cx="220" cy="110" r="30" strokeWidth="6" fill="black" />}
                   {revealPercent > 16.7 && <line x1="220" y1="140" x2="220" y2="210" strokeWidth="6" />}
                   {revealPercent > 33.4 && <line x1="220" y1="150" x2="170" y2="190" strokeWidth="6" />}
                   {revealPercent > 50.1 && <line x1="220" y1="150" x2="270" y2="190" strokeWidth="6" />}
@@ -387,15 +347,12 @@ export default function Home() {
                 </g>
               </svg>
             </div>
-          )}
         </div>
 
-        <div style={{ flex: 1, minWidth: '350px', display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-          <div className="word-display" style={{ flexWrap: 'wrap', justifyContent: 'center' }}>
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.6rem', overflow: 'hidden' }}>
+          <div className="word-display">
             {word.split('').map((char: string, i: number) => {
-              if (char === ' ') {
-                return <div key={i} style={{ width: '30px', height: '60px' }} />
-              }
+              if (char === ' ') return <div key={i} style={{ width: '15px' }} />
               return (
                 <div key={i} className="letter-slot">
                   {guessedLetters.includes(char) ? char : ''}
@@ -405,12 +362,11 @@ export default function Home() {
           </div>
 
           {status !== 'playing' && (
-            <div className="shop-card" style={{ background: status === 'won' ? 'var(--success)' : 'var(--error)', color: 'white' }}>
-              <div>
-                <h2>{status === 'won' ? 'MÜKEMMEL!' : 'ELENDİN!'}</h2>
-                <p>Kelime: {word}</p>
+            <div className="shop-card" style={{ padding: '0.4rem', border: '2px solid #000' }}>
+              <div style={{ fontSize: '0.8rem' }}>
+                <strong>{status === 'won' ? 'KAZANDIN!' : 'KAYBETTİN!'}</strong> - Kelime: {word}
               </div>
-              <button className="button" style={{ background: 'white', color: 'black' }} onClick={startNewGame}>YENİ OYUN</button>
+              <button className="button" style={{ padding: '0.2rem 0.5rem' }} onClick={startNewGame}>YENİ</button>
             </div>
           )}
 
@@ -421,21 +377,21 @@ export default function Home() {
                 className="key"
                 onClick={() => handleGuess(letter)}
                 disabled={guessedLetters.includes(letter) || status !== 'playing'}
-                style={guessedLetters.includes(letter) ? { background: word.includes(letter) ? 'var(--success)' : 'var(--error)', color: 'white' } : {}}
+                style={guessedLetters.includes(letter) ? { background: word.includes(letter) ? 'var(--success)' : 'var(--error)', opacity: 0.7 } : {}}
               >
                 {letter}
               </button>
             ))}
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
             {meaning && (
               <div className="meaning-hint">
-                <strong>İPUCU:</strong> {meaning}
+                <strong style={{ color: 'var(--primary)' }}>İPUCU:</strong> {meaning}
               </div>
             )}
-            <button className="button" onClick={useHint} disabled={status !== 'playing' || (user?.gold || 0) < 50}>
-              💡 HARF AL (50 Altın)
+            <button className="button" style={{ fontSize: '0.9rem' }} onClick={useHint} disabled={status !== 'playing' || (user?.gold || 0) < 50}>
+              💡 HARF AL (50)
             </button>
           </div>
         </div>
