@@ -1,0 +1,5 @@
+
+> adam-asmaca-frontend@0.1.0 lint
+> next lint 
+
+ ⨯ ESLint must be installed: npm install --save-dev eslint
