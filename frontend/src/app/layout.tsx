@@ -4,6 +4,9 @@ import type { Metadata } from 'next'
 export const metadata: Metadata = {
   title: 'Adam Asmaca',
   description: 'Gelişmiş Adam Asmaca Oyunu',
+  icons: {
+    icon: '/vercel_logo.png',
+  },
 }
 
 export default function RootLayout({
