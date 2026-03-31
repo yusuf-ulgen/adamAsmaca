@@ -283,9 +283,10 @@ export default function Home() {
                   key={cat.id} 
                   className={`category-card ${category === cat.id ? 'active' : ''}`}
                   onClick={() => setCategory(cat.id)}
+                  style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '0.4rem' }}
                 >
-                  <span className="category-icon">{cat.icon}</span>
-                  <span>{cat.label}</span>
+                  <span style={{ fontSize: '2rem', lineHeight: 1 }}>{cat.icon}</span>
+                  <span style={{ fontSize: '1rem' }}>{cat.label}</span>
                 </div>
               ))}
             </div>
@@ -530,9 +531,6 @@ export default function Home() {
               <button className="button" onClick={useHint}>50 🪙</button>
             </div>
 
-            <div style={{ textAlign: 'center', opacity: 0.6, fontSize: '0.8rem' }}>
-              Yeni özellikler yakında!
-            </div>
           </div>
         </div>
       )}
