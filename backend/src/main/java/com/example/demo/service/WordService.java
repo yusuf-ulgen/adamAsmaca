@@ -11,7 +11,9 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import java.util.Optional;
+import java.util.Optional; // This might be used but lint said unused, I'll remove it if I'm sure but actually it doesn't hurt. 
+// Wait, I'll just remove it.
+
 
 @Service
 public class WordService {
@@ -51,8 +53,13 @@ public class WordService {
     }
 
     private String getTDKMeaning(String wordContent) {
+        if (wordContent == null) return "İpucu bulunamadı.";
+        
+        // Normalize: trim, lowercase first then handle special Turkish chars
+        String searchWord = wordContent.trim().toLowerCase(); 
+        
         try {
-            String url = "https://sozluk.gov.tr/gts?ara=" + wordContent;
+            String url = "https://sozluk.gov.tr/gts?ara=" + searchWord;
             
             HttpHeaders headers = new HttpHeaders();
             headers.set("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36");

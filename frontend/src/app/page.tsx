@@ -224,6 +224,13 @@ export default function Home() {
         setShowAchievements(false)
         return
       }
+      
+      // ENTER to restart
+      if (e.key === 'Enter' && status !== 'playing') {
+        startNewGame()
+        return
+      }
+
       const key = e.key.toUpperCase()
       if (ALPHABET.includes(key) && !showSettings && !showCategorySelect && !showShop && !showLeaderboard && !showAchievements) {
         handleGuess(key)
@@ -329,21 +336,44 @@ export default function Home() {
 
       <main style={{ display: 'flex', gap: '1rem', width: '100%', flex: 1, overflow: 'hidden', alignItems: 'center' }}>
         <div className={`gallows-container ${isShaking ? 'shake' : ''}`}>
-           <div style={{ position: 'relative', width: '240px', height: '240px' }}>
+            <div style={{ position: 'relative', width: '240px', height: '240px' }}>
               <svg width="240" height="240" viewBox="0 0 320 320" style={{ position: 'absolute', top: 0, left: 0 }}>
+                <defs>
+                  <clipPath id="revealMask">
+                    <rect 
+                      x="160" y="80" 
+                      width="120" 
+                      height={(mistakes / maxErrors) * 160} 
+                      transition="height 0.3s ease"
+                    />
+                  </clipPath>
+                </defs>
                 <g stroke="white" strokeLinecap="round">
+                  {/* Fixed Gallows */}
                   <line x1="40" y1="280" x2="280" y2="280" strokeWidth="8" />
                   <line x1="80" y1="280" x2="80" y2="40" strokeWidth="8" />
                   <line x1="76" y1="40" x2="220" y2="40" strokeWidth="8" />
                   <line x1="80" y1="80" x2="120" y2="40" strokeWidth="8" />
                   <line x1="220" y1="40" x2="220" y2="80" strokeWidth="4" />
                   
-                  {revealPercent > 0 && <circle cx="220" cy="110" r="30" strokeWidth="6" fill="black" />}
-                  {revealPercent > 16.7 && <line x1="220" y1="140" x2="220" y2="210" strokeWidth="6" />}
-                  {revealPercent > 33.4 && <line x1="220" y1="150" x2="170" y2="190" strokeWidth="6" />}
-                  {revealPercent > 50.1 && <line x1="220" y1="150" x2="270" y2="190" strokeWidth="6" />}
-                  {revealPercent > 66.8 && <line x1="220" y1="210" x2="180" y2="260" strokeWidth="6" />}
-                  {revealPercent > 83.5 && <line x1="220" y1="210" x2="260" y2="260" strokeWidth="6" />}
+                  {customImage ? (
+                    <image 
+                      href={customImage} 
+                      x="160" y="80" 
+                      width="120" height="160" 
+                      clipPath="url(#revealMask)"
+                      preserveAspectRatio="xMidYMid slice"
+                    />
+                  ) : (
+                    <>
+                      {revealPercent > 0 && <circle cx="220" cy="110" r="30" strokeWidth="6" fill="black" />}
+                      {revealPercent > 16.7 && <line x1="220" y1="140" x2="220" y2="210" strokeWidth="6" />}
+                      {revealPercent > 33.4 && <line x1="220" y1="150" x2="170" y2="190" strokeWidth="6" />}
+                      {revealPercent > 50.1 && <line x1="220" y1="150" x2="270" y2="190" strokeWidth="6" />}
+                      {revealPercent > 66.8 && <line x1="220" y1="210" x2="180" y2="260" strokeWidth="6" />}
+                      {revealPercent > 83.5 && <line x1="220" y1="210" x2="260" y2="260" strokeWidth="6" />}
+                    </>
+                  )}
                 </g>
               </svg>
             </div>
@@ -501,7 +531,7 @@ export default function Home() {
             </div>
 
             <div style={{ textAlign: 'center', opacity: 0.6, fontSize: '0.8rem' }}>
-              Yakında: Yeni karakter skinleri ve arka planlar!
+              Yeni özellikler yakında!
             </div>
           </div>
         </div>
@@ -586,6 +616,20 @@ export default function Home() {
           </div>
         </div>
       )}
+      {/* Footer Links */}
+      <footer className="footer">
+        <a href="http://yusufulgen.com" target="_blank" rel="noopener noreferrer" className="footer-link">
+          🌐 yusufulgen.com
+        </a>
+        <a href="https://github.com/yusuf-ulgen/adamAsmaca" target="_blank" rel="noopener noreferrer" className="footer-link">
+          <img src="https://cdn.simpleicons.org/github/white" className="footer-icon" alt="GitHub" />
+          GitHub
+        </a>
+        <a href="https://www.linkedin.com/in/yusuf-ulgen" target="_blank" rel="noopener noreferrer" className="footer-link">
+          <img src="https://cdn.simpleicons.org/linkedin/white" className="footer-icon" alt="LinkedIn" />
+          LinkedIn
+        </a>
+      </footer>
     </div>
   )
 }

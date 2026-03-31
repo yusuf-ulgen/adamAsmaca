@@ -48,15 +48,16 @@ body {
 .container {
   max-width: 1000px;
   width: 95%;
-  max-height: 98vh; /* HEIGHT CONSTRAINT */
+  height: 96vh; /* INCREASED FOOTPRINT */
+  max-height: 98vh;
   margin: auto;
-  padding: 1rem; /* REDUCED */
+  padding: 1.5rem; /* INCREASED */
   background: var(--surface);
   border: 4px solid #000;
   box-shadow: var(--shadow);
   display: flex;
   flex-direction: column;
-  gap: 0.8rem; /* REDUCED */
+  gap: 1.2rem; /* INCREASED */
   position: relative;
   overflow: hidden;
 }
@@ -256,10 +257,52 @@ h1 {
   padding: 1rem;
   cursor: pointer;
   text-align: center;
-  font-size: 1.2rem;
+  font-size: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 80px;
+}
+
+.category-icon {
+  font-size: 2rem;
 }
 
 .category-card.active {
   background: var(--success);
   border-color: #fff;
+}
+
+/* FOOTER STYLING */
+.footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  padding: 0.5rem;
+  width: 100%;
+}
+
+.footer-link {
+  color: #fff;
+  text-decoration: none;
+  font-size: 1.4rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: transform 0.2s;
+  opacity: 0.8;
+}
+
+.footer-link:hover {
+  transform: scale(1.1);
+  opacity: 1;
+}
+
+.footer-icon {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
 }
