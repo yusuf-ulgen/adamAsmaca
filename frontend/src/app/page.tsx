@@ -297,7 +297,7 @@ export default function Home() {
 
       <header style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
         <div style={{ minWidth: '150px' }}>
-          <h1 style={{ fontFamily: "'Press Start 2P', cursive", fontSize: '1.2rem', margin: 0 }}>ADAM ASMACA</h1>
+          <h1 style={{ fontFamily: "'Press Start 2P', cursive", fontSize: '1.2rem', margin: 0, color: '#53FC18', textShadow: '2px 2px 0px #000' }}>ADAM ASMACA</h1>
           <p style={{ opacity: 0.8, fontSize: '0.9rem', margin: 0 }}>Hoş geldin, {user?.name}</p>
         </div>
         <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center', flexWrap: 'wrap', flex: 1, justifyContent: 'flex-end' }}>
