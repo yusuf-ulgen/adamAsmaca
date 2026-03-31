@@ -615,17 +615,17 @@ export default function Home() {
         </div>
       )}
       {/* Footer Links */}
-      <footer className="footer">
-        <a href="http://yusufulgen.com" target="_blank" rel="noopener noreferrer" className="footer-link">
-          🌐 yusufulgen.com
-        </a>
+      <footer className="footer" style={{ marginTop: 'auto', paddingTop: '1rem', paddingBottom: '1rem', display: 'flex', justifyContent: 'center', gap: '1.5rem' }}>
         <a href="https://github.com/yusuf-ulgen/adamAsmaca" target="_blank" rel="noopener noreferrer" className="footer-link">
           <img src="https://cdn.simpleicons.org/github/white" className="footer-icon" alt="GitHub" />
-          GitHub
         </a>
         <a href="https://www.linkedin.com/in/yusuf-ulgen" target="_blank" rel="noopener noreferrer" className="footer-link">
           <img src="https://cdn.simpleicons.org/linkedin/white" className="footer-icon" alt="LinkedIn" />
-          LinkedIn
+        </a>
+        <a href="http://yusufulgen.com" target="_blank" rel="noopener noreferrer" className="footer-link">
+          <svg viewBox="0 0 24 24" fill="currentColor" className="footer-icon" style={{ width: '32px', height: '32px' }}>
+             <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm6.96 15h-3.05a16.89 16.89 0 01-1.3 4.67A10.01 10.01 0 0018.96 15zM12 21.94c-1.07-1.3-1.93-3.05-2.42-5.06h4.84c-.49 2.01-1.35 3.76-2.42 5.06zM6.34 15H3.29A10.01 10.01 0 012.06 12a10.01 10.01 0 011.23-3h3.05c-.17.94-.28 1.94-.28 3s.11 2.06.28 3zm1.18 4.67a16.89 16.89 0 01-1.3-4.67h3.05A16.89 16.89 0 017.52 19.67zM12 2.06c1.07 1.3 1.93 3.05 2.42 5.06H9.58C10.07 5.11 10.93 3.36 12 2.06zm4.61 2.61c.64 1.35 1.07 2.92 1.3 4.67h-3.05a16.89 16.89 0 011.75-4.67zM17.66 9H20.7a10.01 10.01 0 011.23 3 10.01 10.01 0 01-1.23 3h-3.04c.17-.94.28-1.94.28-3s-.11-2.06-.28-3z" />
+          </svg>
         </a>
       </footer>
     </div>
