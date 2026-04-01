@@ -12,6 +12,6 @@ WORKDIR /app
 # Build asamasindan cikan jar dosyasini guncel image'a kopyala
 COPY --from=build /app/target/demo-0.0.1-SNAPSHOT.jar app.jar
 # Docker container'i icinde calisacak port
-EXPOSE 8081
+EXPOSE 8080
 # Uygulamayi baslat
-ENTRYPOINT ["java","-jar","app.jar"]
+ENTRYPOINT ["java", "-XX:MaxRAMPercentage=75.0", "-jar", "app.jar"]
