@@ -34,6 +34,7 @@ export default function Home() {
   const [isShaking, setIsShaking] = useState(false)
   const [showConfetti, setShowConfetti] = useState(false)
   const [soundEnabled, setSoundEnabled] = useState(true)
+  const [playedWords, setPlayedWords] = useState<string[]>([])
 
   // Load user (Mock for now since OAuth needs setup)
   useEffect(() => {
@@ -70,11 +71,25 @@ export default function Home() {
   // Fetch new word
   const startNewGame = useCallback(async () => {
     try {
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8081'
-      const res = await fetch(`${API_URL}/api/word?difficulty=${difficulty}&category=${category}`)
+      const res = await fetch(`/api/word`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          playedWords: playedWords,
+          category: category,
+          difficulty: difficulty
+        })
+      })
       const data = await res.json()
       setWord(data.word.toUpperCase())
       setMeaning(data.meaning || "")
+      
+      // Update played words list and keep only last 10
+      setPlayedWords(prev => {
+        const newList = [data.word.toUpperCase(), ...prev]
+        return newList.slice(0, 10)
+      })
+
       setGuessedLetters([])
       setMistakes(0)
       setStatus('playing')
@@ -97,7 +112,7 @@ export default function Home() {
       setStartTime(Date.now())
       setTimeLeft(difficulty === 'HARD' ? 30 : 60)
     }
-  }, [difficulty, category])
+  }, [difficulty, category, playedWords])
 
   // Timer Effect
   useEffect(() => {
@@ -127,8 +142,9 @@ export default function Home() {
 
     const timeTaken = Math.floor((Date.now() - startTime) / 1000)
     try {
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8081'
-      const res = await fetch(`${API_URL}/api/user/update-stats`, {
+      // For Vercel/Frontend-only mode, we handle stats in localStorage
+      // But we can still keep the API call structure if you want to add a real DB later
+      const res = await fetch(`/api/user/update-stats`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -139,7 +155,18 @@ export default function Home() {
           category
         })
       })
-      const updatedUser = await res.json()
+      
+      if (!res.ok) throw new Error("Backend not available")
+      
+      // Update locally since the API is now just a placeholder or for remote sync
+      const updatedUser = { ...user } as any
+      if (won) {
+          updatedUser.gold = (updatedUser.gold || 0) + 30
+          updatedUser.currentStreak = (updatedUser.currentStreak || 0) + 1
+      } else {
+          updatedUser.gold = (updatedUser.gold || 0) + 5
+          updatedUser.currentStreak = 0
+      }
       saveUser(updatedUser)
       
       const oldLength = user.unlockedAchievements?.length || 0
@@ -156,8 +183,7 @@ export default function Home() {
 
   const fetchLeaderboard = async () => {
     try {
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8081'
-      const res = await fetch(`${API_URL}/api/leaderboard`)
+      const res = await fetch(`/api/leaderboard`)
       const data = await res.json()
       setLeaderboard(data)
       setShowLeaderboard(true)
@@ -556,8 +582,7 @@ export default function Home() {
                   }}
                   onClick={async () => {
                     setCategory(cat)
-                    const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8081'
-                    const res = await fetch(`${API_URL}/api/leaderboard?category=${cat}`)
+                    const res = await fetch(`/api/leaderboard?category=${cat}`)
                     const data = await res.json()
                     setLeaderboard(data)
                   }}
